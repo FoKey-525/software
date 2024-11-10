@@ -13,7 +13,7 @@ pub async fn index() -> impl Responder {
 pub fn api_scope() -> Scope {
     web::scope("/api")
         .route("/", web::get().to(index))
-        .route("/save_wallpaper", web::get().to(save_wallpaper))
+        .route("/save_wallpaper", web::post().to(save_wallpaper))
         .route("/change_wallpaper", web::get().to(change_wallpaper))
         .route("/reset_wallpaper", web::get().to(reset_wallpaper))
         .route("/update_app", web::get().to(update_app))

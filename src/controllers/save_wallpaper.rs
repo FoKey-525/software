@@ -1,12 +1,12 @@
-use actix_web::{web, Result};
+use actix_web::{web, Result, Error};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct Info {
-    pub username: String,
+  id: String,
 }
 
-pub async fn save_wallpaper(info: web::Json<Info>) -> Result<String> {
-    Ok(format!("Welcome {}!", info.username))
+pub async fn save_wallpaper(info: web::Json<Info>) -> Result<String, Error> {
+  Ok(format!("Welcome {}!", info.id))
 }
 
