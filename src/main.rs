@@ -1,18 +1,19 @@
-use actix_web::{App, HttpServer};
+use actix_web::{web, App, HttpServer, Result};
+use serde::Deserialize;
 
-mod router;
-mod controllers {
-    pub mod geography;
-    pub mod biology;
-    pub mod physics;
+#[derive(Deserialize)]
+struct Info {
+    username: String,
+}
+
+async fn index(info: web::Json<Info>) -> Result<String> {
+    Ok(format!("{}", info.username))
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new().service(router::api_scope())
-    })
-    .bind(("127.0.0.1", 4400))?
-    .run()
-    .await
+    HttpServer::new(|| App::new().route("/", web::post().to(index)))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }

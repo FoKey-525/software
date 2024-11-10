@@ -1,0 +1,26 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$primary: #0d6efd;
+$enable-shadows: true;
+$prefix: "mo-";
+
+.card {
+  width: 48%;
+  margin: 1%;
+  padding: 1%;
+
+  .menu-button {
+    display: flex;
+    flex-wrap: wrap;
+
+    input[type="submit"] {
+      width: 100% !important;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .menu-button {
+      font-size: 16px;
+    }
+  }
+}
