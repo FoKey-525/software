@@ -1,4 +1,4 @@
-use actix_web::{web, App, HttpServer, HttpResponse, Responder, Scope};
+use actix_web::{web, HttpResponse, Responder, Scope};
 use crate::controllers::{
     save_wallpaper::save_wallpaper,
     change_wallpaper::change_wallpaper,
