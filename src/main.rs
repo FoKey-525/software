@@ -1,14 +1,19 @@
-// main.rs
-use actix_web::{web, App, HttpServer};
-mod controllers; // Подключаем модуль controllers
+use actix_web::{App, HttpServer};
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::post().to(controllers::save_wallpaper::save_wallpaper)) // Правильный путь
+mod router;                
+mod controllers {
+    pub mod save_wallpaper;     
+    pub mod change_wallpaper;       
+    pub mod reset_wallpaper;       
+    pub mod update_app;
+}
+
+#[actix_web::main]         
+async fn main() -> std::io::Result<()> { 
+    HttpServer::new(|| {   
+        App::new().service(router::api_scope())
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", 4400))?
     .run()
     .await
 }
