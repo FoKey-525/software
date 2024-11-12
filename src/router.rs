@@ -13,30 +13,28 @@ pub struct Info {
 }
 
 pub async fn distribution(info: &Info) {
-  if info.function == 0 {
-    let _ = save_wallpaper::save().await;
-  } else if info.function == 1 {
-    let _ = change_wallpaper::change().await; 
-  } else if info.function == 2 {
-    let _ = reset_wallpaper::reset().await; 
-  } else if info.function == 3 {
-    let _ = update_app::update().await;
-  }
+  match info.function {
+    0 => { save_wallpaper::save().await.expect("Error save_wallpaper in router"); },
+    1 => { change_wallpaper::change().await.expect("Error change_wallpaper in router"); },
+    2 => { reset_wallpaper::reset().await.expect("Error reset_wallpaper in router"); },
+    3 => { update_app::update().await.expect("Error update_app in router"); },
+    _ => todo!(),  
+  }  
 }
 
 pub async fn api_post(info: web::Json<Info>) -> Result<String, Error> {
   distribution(&info).await;
-  Ok("Super".to_string())
+  Ok("Request post ok".to_string())
 }
 
 pub async fn api_get(info: web::Json<Info>) -> Result<String, Error> {
   distribution(&info).await;
-  Ok("Super".to_string())
+  Ok("request get ok".to_string())
 }
 
 pub fn api_scope() -> Scope {
-    web::scope("/api")
-        .route("/post", web::post().to(api_post))
-        .route("/get", web::get().to(api_get))
+  web::scope("/api")
+    .route("/post", web::post().to(api_post))
+    .route("/get", web::get().to(api_get))
 }
 
