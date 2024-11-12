@@ -1,5 +1,3 @@
-use actix_web::Responder;
-
-pub async fn reset_wallpaper() -> impl Responder {
-  "reset_wallpaper"
+pub async fn reset() -> Result<String, actix_web::Error> {
+  Ok("Ok".to_string())
 }

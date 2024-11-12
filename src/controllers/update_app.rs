@@ -1,5 +1,3 @@
-use actix_web::Responder;
-
-pub async fn update_app() -> impl Responder {
-  "update_app"
-}
+pub async fn update()-> Result<String, actix_web::Error> {
+  Ok("Ok".to_string())
+}                
