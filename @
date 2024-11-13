@@ -1,0 +1,50 @@
+use actix_web::{web, Scope, Result, Error};
+use serde::Deserialize;
+
+use crate::controllers::save_wallpaper;
+use crate::controllers::change_wallpaper;
+use crate::controllers::reset_wallpaper;
+use crate::controllers::update_app;
+
+#[derive(Deserialize)]
+pub struct Info {
+    id: i32,
+    function: i32,
+} 
+
+pub async fn distribution(info: &Info) -> Result<String, Error> {
+    match info.function {
+        0 => { 
+            save_wallpaper::save().await.expect("Error save_wallpaper in router");
+            Ok("Wallpaper saved successfully".to_string())
+        },
+        1 => { 
+            change_wallpaper::change().await.expect("Error change_wallpaper in router");
+            Ok("Wallpaper changed successfully".to_string())
+        },
+        2 => { 
+            reset_wallpaper::reset().await.expect("Error reset_wallpaper in router");
+            Ok("Wallpaper reset successfully".to_string())
+        },
+        3 => { 
+            update_app::update().await.expect("Error update_app in router");
+            Ok("App updated successfully".to_string())
+        },
+        _ => Err(actix_web::error::ErrorBadRequest("Invalid function")),
+    }
+}
+
+pub async fn api_post(info: web::Json<Info>) -> Result<String, Error> {
+    distribution(&info).await
+}
+
+pub async fn api_get(info: web::Json<Info>) -> Result<String, Error> {
+    distribution(&info).await
+}
+
+pub fn api_scope() -> Scope {
+    web::scope("/api")
+        .route("/post", web::post().to(api_post))
+        .route("/get", web::get().to(api_get))
+}
+
